@@ -3,7 +3,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def api_root():
-    return 'Welcome to the pvyield API'
+    return 'Welcome to the pvyield API!'
 
 @app.route('/articles')
 def api_articles():
