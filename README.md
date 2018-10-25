@@ -1,2 +1,2 @@
 # pvy-api
-pvyield API
+pvyield API workshop
