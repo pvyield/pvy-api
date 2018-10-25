@@ -1,6 +1,7 @@
 from flask import Flask, url_for, request
 from flask_restplus import Api
 from flask_jwt import JWT
+from werkzeug.contrib.fixers import ProxyFix
 
 from security import authenticate, identity
 from resources.user import UserRegister
@@ -9,12 +10,14 @@ from database import Database
 
 
 application = Flask(__name__)
+application.wsgi_app = ProxyFix(application.wsgi_app)
+
 # SQLAlchemy has its own tracker, so deactivate Flask tracker
 application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 application.secret_key = 'asdaru347qcnz4r7r8527nftve8'
-api = Api(application)
 
+api = Api(application)
 jwt = JWT(application, authenticate, identity)
 
 # ADD RESOURCES

@@ -3,3 +3,4 @@ flask_restplus
 flask_jwt
 flask_sqlalchemy
 pyopenssl
+werkzeug
