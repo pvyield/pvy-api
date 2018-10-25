@@ -1,17 +1,27 @@
-from flask import Flask, url_for
+from flask import Flask, url_for, request
+from flask_restplus import Api
+from flask_jwt import JWT
+
+from security import authenticate, identity
+from resources.user import UserRegister
+from resources.item import Item, ItemList
+from database import Database
+
+
 application = Flask(__name__)
+# SQLAlchemy has its own tracker, so deactivate Flask tracker
+application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+application.secret_key = 'asdaru347qcnz4r7r8527nftve8'
+api = Api(application)
 
-@application.route('/')
-def api_root():
-    return 'Welcome to the pvyield API!!'
+jwt = JWT(application, authenticate, identity)
 
-@application.route('/articles')
-def api_articles():
-    return 'List of ' + url_for('api_articles')
+# ADD RESOURCES
+api.add_resource(Item, '/item/<string:name>')
+api.add_resource(ItemList, '/items')
+api.add_resource(UserRegister, '/register')
 
-@application.route('/articles/<articleid>')
-def api_article(articleid):
-    return 'You are reading ' + articleid
 
 if __name__ == '__main__':
     application.run()
