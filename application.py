@@ -24,4 +24,4 @@ api.add_resource(UserRegister, '/register')
 
 
 if __name__ == '__main__':
-    application.run()
+    application.run(ssl_context='adhoc')
