@@ -4,7 +4,6 @@ from flask_jwt import jwt_required
 from models.item import ItemModel
 import sqlite3
 
-
 class Item(Resource):
     TABLE_NAME = 'items'
 
@@ -17,12 +16,14 @@ class Item(Resource):
 
     @jwt_required()
     def get(self, name):
+        """item>get INFOTEXT"""
         item = ItemModel.find_by_name(name)
         if item:
             return item.json()
         return {'message': 'Item not found'}, 404
 
     def post(self, name):
+        '''item>post INFOTEXT'''
         if ItemModel.find_by_name(name):
             return {'message': "An item with name '{}' already exists.".format(name)}
 
@@ -38,6 +39,7 @@ class Item(Resource):
 
     @jwt_required()
     def delete(self, name):
+        """Deletes Item from the database."""
         item = ItemModel.find_by_name(name)
         if item:
             item.delete_from_db()

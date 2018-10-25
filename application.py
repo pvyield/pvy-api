@@ -17,13 +17,22 @@ application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 application.secret_key = 'asdaru347qcnz4r7r8527nftve8'
 
-api = Api(application)
+api = Api(application,
+          default='test',
+          default_label='this is namespace test',
+          version='0.1',
+          title='pvyield API development',
+          description='Prototype of the pvyield API service.',
+          contact='info@pvyield.com',
+          contact_url='https://pvyield.com')
 jwt = JWT(application, authenticate, identity)
 
 # ADD RESOURCES
-api.add_resource(Item, '/item/<string:name>')
-api.add_resource(ItemList, '/items')
-api.add_resource(UserRegister, '/register')
+ns_items = api.namespace('Items', description='Operations related to items.')
+ns_items.add_resource(Item, '/item/<string:name>')
+ns_items.add_resource(ItemList, '/items')
+ns_users = api.namespace('Users', description='Operations related to users.')
+ns_users.add_resource(UserRegister, '/register')
 
 
 if __name__ == '__main__':
