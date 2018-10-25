@@ -1,17 +1,17 @@
 from flask import Flask, url_for
-app = Flask(__name__)
+application = Flask(__name__)
 
-@app.route('/')
+@application.route('/')
 def api_root():
     return 'Welcome to the pvyield API!!'
 
-@app.route('/articles')
+@application.route('/articles')
 def api_articles():
     return 'List of ' + url_for('api_articles')
 
-@app.route('/articles/<articleid>')
+@application.route('/articles/<articleid>')
 def api_article(articleid):
     return 'You are reading ' + articleid
 
 if __name__ == '__main__':
-    app.run()
+    application.run()
