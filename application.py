@@ -18,14 +18,13 @@ application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 application.secret_key = 'asdaru347qcnz4r7r8527nftve8'
 
 api = Api(application,
-          default='test',
-          default_label='this is namespace test',
           version='0.1',
-          title='pvyield API development',
-          description='Prototype of the pvyield API service.',
+          title='pvyield API',
+          description='Development prototype of the pvyield RESTful API service.',
           contact='info@pvyield.com',
           contact_url='https://pvyield.com')
 jwt = JWT(application, authenticate, identity)
+
 
 # ADD RESOURCES
 ns_items = api.namespace('Items', description='Operations related to items.')
