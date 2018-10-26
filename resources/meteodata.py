@@ -5,11 +5,11 @@ from flask_jwt import jwt_required
 class MeteoData(Resource):
 
     @jwt_required()
-    def get(self, uid):
+    def get(self, muid):
         """Check if the meteo dataset with 'muid' exists."""
 
     @jwt_required()
-    def delete(self, uid):
+    def delete(self, muid):
         """Delete dataset defined by 'muid'."""
 
 

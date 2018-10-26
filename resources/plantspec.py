@@ -33,19 +33,15 @@ class PlantSpec(Resource):
         return {'message': 'Item deleted'}
 
 
-class PostPlantSpec(Resource):
+class PostPlantSpecSam(Resource):
 
     @jwt_required()
     def post(self):
-        """Create a plant configuration specification. Returns a unique identifier."""
+        """Create a plant configuration specification in SAM definition format. Returns a unique identifier."""
 
-        data = PlantSpec.parser.parse_args()
-        name = "asldh237edas" # randomized new uid
-        plantspec = PlantSpecModel(name, data['price'])
 
-        try:
-            plantspec.save_to_db()
-        except:
-            return {"message": "An error occurred inserting the item."}, 500
+class PostPlantSpecPvy(Resource):
 
-        return plantspec.json(), 201
+    @jwt_required()
+    def post(self):
+        """Create a plant configuration specification in simplified pvyield format. This will translate to SAM format internally. Returns a unique identifier."""

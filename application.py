@@ -5,9 +5,11 @@ from werkzeug.contrib.fixers import ProxyFix
 
 from security import authenticate, identity
 from resources.user import UserRegister
-from resources.plantspec import PlantSpec, PostPlantSpec
+from resources.plantspec import PlantSpec, PostPlantSpecSam, PostPlantSpecPvy
 from resources.meteodata import MeteoData, CreateMeteoData, PostMeteoData
+from resources.financials import Financials, PostFinancials
 from resources.simulation import Simulate, Optimize
+from resources.analysis import Analyze
 
 application = Flask(__name__)
 application.wsgi_app = ProxyFix(application.wsgi_app)
@@ -20,7 +22,20 @@ application.secret_key = 'asdaru347qcnz4r7r8527nftve8'
 api = Api(application,
           version='0.1',
           title='pvyield API',
-          description='Development prototype of the pvyield RESTful API service.',
+          description='<table><tr>'
+                      '<td>'
+                      'Development <i><u>prototype</u></i> of the <b>pvyield RESTful API service</b>.<br />'
+                      'This API provides a complete cloud-based toolchain for the performance analysis of large-scale, '
+                      'solar photovoltaic power plants and allows to:'
+                      '<ul><li>Define a <b>plant configuration</b> including main components,</li>'
+                      '<li>Create and use <b>irradiance datasets</b> based on provided hourly data or commercial vendors,</li>' 
+                      '<li><b>Run simulations</b> (based on <a href="https://sam.nrel.gov/">SAM</a>),</li>'
+                      '<li><b>Optimize</b> for LCOE or other metrics with a <a href="https://en.wikipedia.org/wiki/Genetic_algorithm">genetic algorithm</a>, and to</li>'
+                      '<li><b>Analyze results</b> via technical and economic statistical analysis (P90, P50, P10, etc.)</li></ul>'
+                      'Feel free to <a href="mailto:info@pvyield.com">get in touch</a> if you are interested in this project.'
+                      '</td>'
+                      '<td style="text-align:right"><img src="http://external.pvyield.com/logo_02_darkblue_large.svg" alt="logo" style="width:250px;height:130px" /></td>'
+                      '</tr></table>',
           contact='info@pvyield.com',
           contact_url='https://pvyield.com')
 jwt = JWT(application, authenticate, identity)
@@ -29,16 +44,24 @@ jwt = JWT(application, authenticate, identity)
 # ADD RESOURCES
 ns_spec = api.namespace('PlantSpec', description='Operations related to specifying the configuration of a power plant')
 ns_spec.add_resource(PlantSpec, '/<string:puid>')
-ns_spec.add_resource(PostPlantSpec, '/')
+ns_spec.add_resource(PostPlantSpecSam, '/sam/')
+ns_spec.add_resource(PostPlantSpecPvy, '/pvy/')
 
 ns_meteo = api.namespace('MeteoData', description='Operations related to creating meteorological and irradiance datatsets')
 ns_meteo.add_resource(MeteoData, '/<string:muid>')
 ns_meteo.add_resource(CreateMeteoData, '/create/<string:type>/<float:latitude>/<float:longitude>')
-ns_meteo.add_resource(PostMeteoData, '/post/')
+ns_meteo.add_resource(PostMeteoData, '/upload/<string:format>')
 
-ns_sim = api.namespace('Simulation', description='Operations related to simulations based on PlantSpec and MeteoData datasets')
-ns_sim.add_resource(Simulate, '/simulate/<string:puid>/<string:muid>')
-ns_sim.add_resource(Optimize, '/optimize/<string:puid>/<string:muid>')
+ns_sim = api.namespace('Financials', description='Operations related to the setting the inputs for the economic analysis of simulation results')
+ns_sim.add_resource(Financials, '/<string:fuid>')
+ns_sim.add_resource(PostFinancials, '/')
+
+ns_finance = api.namespace('Simulation', description='Operations related to simulations based on the PlantSpec, MeteoData, and Financials datasets')
+ns_finance.add_resource(Simulate, '/simulate/<string:puid>/<string:muid>/<string:fuid>')
+ns_finance.add_resource(Optimize, '/optimize/<string:puid>/<string:muid>/<string:fuid>/<string:parameters>/<string:settings>')
+
+ns_analysis = api.namespace('Analysis', description='Operations related to analyzing simulation results')
+ns_analysis.add_resource(Analyze, '/<string:dataset>/<string:aggregation>/<string:metric>')
 
 ns_users = api.namespace('Users', description='Operations related to users')
 ns_users.add_resource(UserRegister, '/register')
