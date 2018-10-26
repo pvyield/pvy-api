@@ -5,5 +5,12 @@ from flask_jwt import jwt_required
 class Analyze(Resource):
 
     @jwt_required()
-    def get(self, dataset, aggregation, metric):
-        """Run a statistical analysis of a simulation run ('suid')"""
+    def get(self, suid, dataset, aggregation, metric):
+        """Returns a single statistical metric value for a simulation run"""
+
+
+class AnalyzePost(Resource):
+
+    @jwt_required()
+    def post(self, suid):
+        """Runs a set of statistical analyses for a simulation run based on a json-file input"""

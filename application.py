@@ -9,7 +9,7 @@ from resources.plantspec import PlantSpec, PostPlantSpecSam, PostPlantSpecPvy
 from resources.meteodata import MeteoData, CreateMeteoData, PostMeteoData
 from resources.financials import Financials, PostFinancials
 from resources.simulation import Simulate, Optimize
-from resources.analysis import Analyze
+from resources.analysis import Analyze, AnalyzePost
 
 application = Flask(__name__)
 application.wsgi_app = ProxyFix(application.wsgi_app)
@@ -30,8 +30,8 @@ api = Api(application,
                       '<ul><li>Define a <b>plant configuration</b> including main components,</li>'
                       '<li>Create and use <b>irradiance datasets</b> based on used-specified hourly data or datasets from commercial vendors,</li>' 
                       '<li>Optionally set <b>financial boundary conditions</b> for the overall analysis,</li>'
-                      '<li><b>Run performance simulations</b> (based on <a href="https://sam.nrel.gov/">SAM</a>),</li>'
-                      '<li><b>Optimize</b> for LCOE or other metrics with a <a href="https://en.wikipedia.org/wiki/Genetic_algorithm">genetic algorithm</a>, and finally to</li>'
+                      '<li><b>Run performance simulations</b> (based on <a href="https://www.nrel.gov/">NREL</a>-driven, open-source <a href="https://github.com/NREL/ssc">SAM</a>),</li>'
+                      '<li><b>Optimize</b> for <a href="https://www.nrel.gov/analysis/tech-lcoe.html">LCOE</a>, <a href="https://en.wikipedia.org/wiki/Internal_rate_of_return">IRR</a>, or <a href="https://en.wikipedia.org/wiki/Net_present_value">NPV</a> with <a href="https://en.wikipedia.org/wiki/Genetic_algorithm">genetic optimization</a>, and finally to</li>'
                       '<li><b>Analyze results</b> via technical and economic statistical analysis (P90, P50, P10, etc.)</li></ul>'
                       'Feel free to <a href="mailto:info@pvyield.com">get in touch</a> if you are interested in this project.'
                       '</td>'
@@ -63,6 +63,7 @@ ns_finance.add_resource(Optimize, '/optimize/<string:puid>/<string:muid>/<string
 
 ns_analysis = api.namespace('Analysis', description='Operations related to analyzing simulation results')
 ns_analysis.add_resource(Analyze, '/<string:suid>/<string:dataset>/<string:aggregation>/<string:metric>')
+ns_analysis.add_resource(AnalyzePost, '/<string:suid>')
 
 ns_users = api.namespace('Users', description='Operations related to users')
 ns_users.add_resource(UserRegister, '/register')
