@@ -5,9 +5,9 @@ from werkzeug.contrib.fixers import ProxyFix
 
 from security import authenticate, identity
 from resources.user import UserRegister
-from resources.item import Item, ItemList
-from database import Database
-
+from resources.plantspec import PlantSpec, PostPlantSpec
+from resources.meteodata import MeteoData, CreateMeteoData, PostMeteoData
+from resources.simulation import Simulate, Optimize
 
 application = Flask(__name__)
 application.wsgi_app = ProxyFix(application.wsgi_app)
@@ -27,12 +27,22 @@ jwt = JWT(application, authenticate, identity)
 
 
 # ADD RESOURCES
-ns_items = api.namespace('Items', description='Operations related to items.')
-ns_items.add_resource(Item, '/item/<string:name>')
-ns_items.add_resource(ItemList, '/items')
-ns_users = api.namespace('Users', description='Operations related to users.')
+ns_spec = api.namespace('PlantSpec', description='Operations related to specifying the configuration of a power plant')
+ns_spec.add_resource(PlantSpec, '/<string:puid>')
+ns_spec.add_resource(PostPlantSpec, '/')
+
+ns_meteo = api.namespace('MeteoData', description='Operations related to creating meteorological and irradiance datatsets')
+ns_meteo.add_resource(MeteoData, '/<string:muid>')
+ns_meteo.add_resource(CreateMeteoData, '/create/<string:type>/<float:latitude>/<float:longitude>')
+ns_meteo.add_resource(PostMeteoData, '/post/')
+
+ns_sim = api.namespace('Simulation', description='Operations related to simulations based on PlantSpec and MeteoData datasets')
+ns_sim.add_resource(Simulate, '/simulate/<string:puid>/<string:muid>')
+ns_sim.add_resource(Optimize, '/optimize/<string:puid>/<string:muid>')
+
+ns_users = api.namespace('Users', description='Operations related to users')
 ns_users.add_resource(UserRegister, '/register')
 
 
 if __name__ == '__main__':
-    application.run(ssl_context='adhoc')
+    application.run()  # application.run(ssl_context='adhoc')
