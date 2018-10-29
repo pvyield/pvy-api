@@ -2,5 +2,8 @@ flask
 flask_restplus
 flask_jwt
 flask_sqlalchemy
+flask_bcrypt
+flask_testing
+flask_script
 pyopenssl
 werkzeug
