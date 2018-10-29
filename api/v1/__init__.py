@@ -1,7 +1,7 @@
 from flask_restplus import Api
 from flask import Blueprint
 
-from .main.resource.user import api as user_ns
+from .main.resource import user
 from .main.resource.plantspec import api as plantspec_ns
 from .main.resource.meteodata import api as meteodata_ns
 from .main.resource.economics import api as economics_ns
@@ -36,4 +36,4 @@ api.add_namespace(meteodata_ns, path='/meteodata')
 api.add_namespace(economics_ns, path='/economics')
 api.add_namespace(simulation_ns, path='/simulation')
 api.add_namespace(analysis_ns, path='/analysis')
-api.add_namespace(user_ns, path='/user')
+api.add_namespace(user.api, path='/user')
