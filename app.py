@@ -7,14 +7,14 @@ from flask_jwt import JWT
 # from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 
-import api.v1
+import api.v1 as api_v1
 
 # call the create_app function we created initially to create the application instance with the required parameter
 # from the environment variable which can be either of the following - dev, prod, test.
 # If none is set in the environment variable, the default dev is used.
 
-app = api.v1.main.create_app(os.getenv('BOILERPLATE_ENV') or 'dev')
-app.register_blueprint(api.v1.blueprint, url_prefix='/v1')
+app = api_v1.main.create_app(os.getenv('BOILERPLATE_ENV') or 'dev')
+app.register_blueprint(api_v1.blueprint, url_prefix='/v1')
 
 app.app_context().push()
 manager = Manager(app)
@@ -45,4 +45,4 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run()  # manager.run()
+    manager.run()
