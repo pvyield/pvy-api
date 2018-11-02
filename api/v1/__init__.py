@@ -16,7 +16,7 @@ api = Api(blueprint,
           description='<table><tr>'
                       '<td>'
                       'Development <i><u>prototype</u></i> of the <b>pvyield RESTful API service</b>.<br />'
-                      'This API provides a complete cloud-based toolchain for the performance analysis of large-scale, '
+                      'This API pipprovides a complete cloud-based toolchain for the performance analysis of large-scale, '
                       'solar photovoltaic power plants and allows to:'
                       '<ul><li>Define a <b>plant configuration</b> including main components,</li>'
                       '<li>Create and use <b>irradiance datasets</b> based on used-specified hourly data or datasets from commercial vendors,</li>' 
