@@ -1,12 +1,7 @@
 from flask_restplus import Api
 from flask import Blueprint
 
-from .main.resource import user
-from .main.resource.plantspec import api as plantspec_ns
-from .main.resource.meteodata import api as meteodata_ns
-from .main.resource.economics import api as economics_ns
-from .main.resource.simulation import api as simulation_ns
-from .main.resource.analysis import api as analysis_ns
+from .main.resource import user, plantspec, meteodata, economics, simulation, analysis
 
 blueprint = Blueprint('api', __name__)
 
@@ -31,9 +26,9 @@ api = Api(blueprint,
           contact='info@pvyield.com',
           contact_url='https://pvyield.com')
 
-api.add_namespace(plantspec_ns, path='/plantspec')
-api.add_namespace(meteodata_ns, path='/meteodata')
-api.add_namespace(economics_ns, path='/economics')
-api.add_namespace(simulation_ns, path='/simulation')
-api.add_namespace(analysis_ns, path='/analysis')
+api.add_namespace(plantspec.api, path='/plantspec')
+api.add_namespace(meteodata.api, path='/meteodata')
+api.add_namespace(economics.api, path='/economics')
+api.add_namespace(simulation.api, path='/simulation')
+api.add_namespace(analysis.api, path='/analysis')
 api.add_namespace(user.api, path='/user')

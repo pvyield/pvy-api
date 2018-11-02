@@ -26,6 +26,11 @@ manager = Manager(application)
 #manager.add_command('db', MigrateCommand)
 
 
+@application.route("/")
+def index():
+    return redirect('/v1/')
+
+
 @manager.command  # marks function as executable from the command line.
 def run():
     application.run()
@@ -39,11 +44,6 @@ def test():
     if result.wasSuccessful():
         return 0
     return 1
-
-
-@application.route("/")
-def index():
-    return redirect('/v1/')
 
 
 if __name__ == "__main__":
