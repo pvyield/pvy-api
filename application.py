@@ -1,6 +1,7 @@
 import os
 import unittest
 from flask import redirect
+
 from flask_jwt import JWT
 # from __security import authenticate, identity
 
@@ -12,6 +13,7 @@ import api.v1 as api_v1
 # call the create_app function we created initially to create the application instance with the required parameter
 # from the environment variable which can be either of the following - dev, prod, test.
 # If none is set in the environment variable, the default dev is used.
+
 
 application = api_v1.main.create_app(os.getenv('BOILERPLATE_ENV') or 'dev')
 application.register_blueprint(api_v1.blueprint, url_prefix='/v1')
@@ -44,7 +46,5 @@ def index():
     return redirect('/v1/')
 
 
-if __name__ == '__main__':
-    #manager.run()
-    run()
-
+if __name__ == "__main__":
+    application.run()
