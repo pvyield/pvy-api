@@ -44,8 +44,8 @@ make_task_def(){
 			"name": "go-sample-webapp",
 			"image": "%s.dkr.ecr.us-east-1.amazonaws.com/go-sample-webapp:%s",
 			"essential": true,
-			"memory": 200,
-			"cpu": 10,
+			"memory": 1,
+			"cpu": 1,
 			"portMappings": [
 				{
 					"containerPort": 8080,
