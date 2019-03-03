@@ -66,7 +66,7 @@ make_task_def() {
             ],
             \"containerDefinitions\": [
                 {
-                    \"name\": \"%s,
+                    \"name\": \"%s\",
                     \"image\": \"%s.dkr.ecr.%s.amazonaws.com/%s:%s\",
                     \"memoryReservation\": 512,
                     \"resourceRequirements\": null,
