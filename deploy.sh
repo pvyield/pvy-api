@@ -44,25 +44,23 @@ make_task_def() {
 
     appname="$AWS_RESOURCE_NAME_PREFIX-app"
 
-	task_template='[
-		{
-			"name": "%s",
-			"image": "%s.dkr.ecr.%s.amazonaws.com/%s:%s",
-			"essential": true,
-			"cpu": 256,
-			"memory": 512,
-			"portMappings": [
-				{
-					"containerPort": 8080,
-					"hostPort": 80
-				}
-			]
-		}
-	]'
+	#task_template='[
+	#	{
+	#		"name": "%s",
+	#		"image": "%s.dkr.ecr.%s.amazonaws.com/%s:%s",
+	#		"essential": true,
+	#		"cpu": 256,
+	#		"memory": 512,
+	#		"portMappings": [
+	#			{
+	#				"containerPort": 8080,
+	#				"hostPort": 80
+	#			}
+	#		]
+	#	}
+	#]'
 
-
-	task_template='[
-        {
+    task_template='{
             "requiresCompatibilities": [
                 "FARGATE"
             ],
@@ -109,15 +107,14 @@ make_task_def() {
             "cpu": "256",
             "executionRoleArn": "<create_new>",
             "family": "%s"
-        }
-	]'
+        }'
 
-	task_def=$(printf "$task_template" $appname $AWS_ACCOUNT_ID $AWS_DEFAULT_REGION $AWS_RESOURCE_NAME_PREFIX $CIRCLE_SHA1 $family)
+    task_def=$(printf "$task_template" $appname $AWS_ACCOUNT_ID $AWS_DEFAULT_REGION $AWS_RESOURCE_NAME_PREFIX $CIRCLE_SHA1 $family)
 }
 
 push_ecr_image(){
-	eval $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
-	docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$AWS_RESOURCE_NAME_PREFIX:$CIRCLE_SHA1
+    eval $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+    docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$AWS_RESOURCE_NAME_PREFIX:$CIRCLE_SHA1
 }
 
 register_definition() {
@@ -128,7 +125,6 @@ register_definition() {
         echo "Failed to register task definition"
         return 1
     fi
-
 }
 
 configure_aws_cli
