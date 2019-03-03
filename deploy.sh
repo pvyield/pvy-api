@@ -42,7 +42,7 @@ deploy_cluster() {
 
 make_task_def() {
 
-    appname = "$AWS_RESOURCE_NAME_PREFIX-app"
+    appname="$AWS_RESOURCE_NAME_PREFIX-app"
 	task_template='[
 		{
 			"name": "%s",
