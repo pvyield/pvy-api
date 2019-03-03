@@ -22,8 +22,10 @@ api = Api(blueprint,
                       'Feel free to <a href="mailto:info@pvyield.com">get in touch</a> if you are interested in this project.'
                       '</td>'
                       '<td style="text-align:right"><img src="http://external.pvyield.com/logo_02_darkblue_large.svg" alt="logo" style="width:250px;height:130px" /></td>'
+                      '</tr><tr>'
+                      '<td><img src="https://circleci.com/gh/pvyield/pvy-api/tree/master.svg?style=shield" /></td>'
                       '</tr></table>',
-          contact='info@pvyield.com',
+          contact='pvyield GmbH',
           contact_url='https://pvyield.com')
 
 api.add_namespace(plantspec.api, path='/plantspec')
