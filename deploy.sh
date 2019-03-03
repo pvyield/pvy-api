@@ -43,6 +43,7 @@ deploy_cluster() {
 make_task_def() {
 
     appname="$AWS_RESOURCE_NAME_PREFIX-app"
+
 	task_template='[
 		{
 			"name": "%s",
@@ -59,7 +60,59 @@ make_task_def() {
 		}
 	]'
 
-	task_def=$(printf "$task_template" $appname $AWS_ACCOUNT_ID $AWS_DEFAULT_REGION $AWS_RESOURCE_NAME_PREFIX $CIRCLE_SHA1)
+
+	task_template='[
+        {
+            "requiresCompatibilities": [
+                "FARGATE"
+            ],
+            "containerDefinitions": [
+                {
+                    "name": "%s,
+                    "image": "%s.dkr.ecr.%s.amazonaws.com/%s:%s",
+                    "memoryReservation": "512",
+                    "resourceRequirements": null,
+                    "essential": true,
+                    "portMappings": [
+                        {
+                            "containerPort": "8080",
+                            "hostPort": 80,
+                            "protocol": "tcp"
+                        }
+                    ],
+                    "environment": null,
+                    "secrets": null,
+                    "mountPoints": null,
+                    "volumesFrom": null,
+                    "hostname": null,
+                    "user": null,
+                    "workingDirectory": null,
+                    "extraHosts": null,
+                    "logConfiguration": {
+                        "logDriver": "awslogs",
+                        "options": {
+                            "awslogs-group": "/ecs/pvy-manual-00",
+                            "awslogs-region": "eu-central-1",
+                            "awslogs-stream-prefix": "ecs"
+                        }
+                    },
+                    "ulimits": null,
+                    "dockerLabels": null,
+                    "repositoryCredentials": {
+                        "credentialsParameter": ""
+                    }
+                }
+            ],
+            "volumes": [],
+            "networkMode": "awsvpc",
+            "memory": "512",
+            "cpu": "256",
+            "executionRoleArn": "<create_new>",
+            "family": "%s"
+        }
+	]'
+
+	task_def=$(printf "$task_template" $appname $AWS_ACCOUNT_ID $AWS_DEFAULT_REGION $AWS_RESOURCE_NAME_PREFIX $CIRCLE_SHA1 $family)
 }
 
 push_ecr_image(){
@@ -68,8 +121,8 @@ push_ecr_image(){
 }
 
 register_definition() {
-    echo "container-definitions: $task_def"
-    if revision=$(aws ecs register-task-definition --container-definitions "$task_def" --requires-compatibilities FARGATE --cpu 256 --memory 512 --family $family | $JQ '.taskDefinition.taskDefinitionArn'); then
+    echo "task-definitions: $task_def"
+    if revision=$(aws ecs register-task-definition --cli-input-json '$task_def' | $JQ '.taskDefinition.taskDefinitionArn'); then
         echo "Revision: $revision"
     else
         echo "Failed to register task definition"
