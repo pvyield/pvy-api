@@ -17,7 +17,7 @@ deploy_cluster() {
 
     make_task_def
     register_definition
-    if [[ $(aws ecs update-service --cluster $clustername --service $servicename --task-definition $revision | \
+    if [[ $(aws ecs update-service --cluster $clustername --service $servicename --task-definition $family:$revision | \
                    $JQ '.service.taskDefinition') != $revision ]]; then
         echo "Error updating service."
         return 1
@@ -25,19 +25,19 @@ deploy_cluster() {
 
     # wait for older revisions to disappear
     # not really necessary, but nice for demos
-    for attempt in {1..30}; do
-        if stale=$(aws ecs describe-services --cluster $clustername --services $servicename | \
-                       $JQ ".services[0].deployments | .[] | select(.taskDefinition != \"$revision\") | .taskDefinition"); then
-            echo "Waiting for stale deployments:"
-            echo "$stale"
-            sleep 5
-        else
-            echo "Deployed!"
-            return 0
-        fi
-    done
-    echo "Service update took too long."
-    return 1
+    #for attempt in {1..30}; do
+    #   if stale=$(aws ecs describe-services --cluster $clustername --services $servicename | \
+    #                   $JQ ".services[0].deployments | .[] | select(.taskDefinition != \"$revision\") | .taskDefinition"); then
+    #        echo "Waiting for stale deployments:"
+    #        echo "$stale"
+    #        sleep 5
+    #    else
+    #        echo "Deployed!"
+    #        return 0
+    #    fi
+    #done
+    #echo "Service update took too long."
+    #return 1
 }
 
 make_task_def() {
@@ -48,6 +48,8 @@ make_task_def() {
 			"name": "%s",
 			"image": "%s.dkr.ecr.%s.amazonaws.com/%s:%s",
 			"essential": true,
+			"cpu": 256,
+			"memory": 512,
 			"portMappings": [
 				{
 					"containerPort": 8080,
@@ -66,8 +68,8 @@ push_ecr_image(){
 }
 
 register_definition() {
-
-    if revision=$(aws ecs register-task-definition --container-definitions "$task_def" --cpu 256 --memory 512 --family $family | $JQ '.taskDefinition.taskDefinitionArn'); then
+    echo "container-definitions: $task_def"
+    if revision=$(aws ecs register-task-definition --container-definitions "$task_def" --requires-compatibilities FARGATE --cpu 256 --memory 512 --family $family | $JQ '.taskDefinition.taskDefinitionArn'); then
         echo "Revision: $revision"
     else
         echo "Failed to register task definition"
