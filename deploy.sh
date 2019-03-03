@@ -76,7 +76,7 @@ make_task_def() {
                             \"hostPort\": 80,
                             \"protocol\": \"tcp\"
                         }
-                    ],
+                    ]
                 }
             ],
             \"networkMode\": \"awsvpc\",
