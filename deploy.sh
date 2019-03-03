@@ -69,7 +69,6 @@ make_task_def() {
                     \"name\": \"%s\",
                     \"image\": \"%s.dkr.ecr.%s.amazonaws.com/%s:%s\",
                     \"memoryReservation\": 512,
-                    \"resourceRequirements\": null,
                     \"essential\": true,
                     \"portMappings\": [
                         {
@@ -78,33 +77,11 @@ make_task_def() {
                             \"protocol\": \"tcp\"
                         }
                     ],
-                    \"environment\": null,
-                    \"secrets\": null,
-                    \"mountPoints\": null,
-                    \"volumesFrom\": null,
-                    \"hostname\": null,
-                    \"user\": null,
-                    \"workingDirectory\": null,
-                    \"extraHosts\": null,
-                    \"logConfiguration\": {
-                        \"logDriver\": \"awslogs\",
-                        \"options\": {
-                            \"awslogs-group\": \"/ecs/pvy-manual-00\",
-                            \"awslogs-region\": \"eu-central-1\",
-                            \"awslogs-stream-prefix\": \"ecs\"
-                        }
-                    },
-                    \"ulimits\": null,
-                    \"dockerLabels\": null,
-                    \"repositoryCredentials\": {
-                        \"credentialsParameter\": \"\"
-                    }
                 }
             ],
-            \"volumes\": [],
             \"networkMode\": \"awsvpc\",
-            \"memory\": 512,
-            \"cpu\": 256,
+            \"memory\": \"512\",
+            \"cpu\": \"256\",
             \"executionRoleArn\": \"<create_new>\",
             \"family\": \"%s\"
         }'
