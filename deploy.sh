@@ -13,6 +13,8 @@ deploy_cluster() {
 
     clustername="$AWS_RESOURCE_NAME_PREFIX-cluster"
     servicename="$AWS_RESOURCE_NAME_PREFIX-service"
+    containername="$AWS_RESOURCE_NAME_PREFIX-container"
+    executionrole="$AWS_RESOURCE_NAME_PREFIX-ecs-execution-role"
     family=$servicename
 
     make_task_def
@@ -41,25 +43,6 @@ deploy_cluster() {
 }
 
 make_task_def() {
-
-    appname="$AWS_RESOURCE_NAME_PREFIX-app"
-
-	#task_template='[
-	#	{
-	#		"name": "%s",
-	#		"image": "%s.dkr.ecr.%s.amazonaws.com/%s:%s",
-	#		"essential": true,
-	#		"cpu": 256,
-	#		"memory": 512,
-	#		"portMappings": [
-	#			{
-	#				"containerPort": 8080,
-	#				"hostPort": 80
-	#			}
-	#		]
-	#	}
-	#]'
-
     task_template='{
             \"requiresCompatibilities\": [
                 \"FARGATE\"
@@ -69,6 +52,8 @@ make_task_def() {
                     \"name\": \"%s\",
                     \"image\": \"%s.dkr.ecr.%s.amazonaws.com/%s:%s\",
                     \"memoryReservation\": 512,
+                    \"cpu\": 256,
+                    \"memory\": 512,
                     \"essential\": true,
                     \"portMappings\": [
                         {
@@ -82,11 +67,11 @@ make_task_def() {
             \"networkMode\": \"awsvpc\",
             \"memory\": \"512\",
             \"cpu\": \"256\",
-            \"executionRoleArn\": \"<create_new>\",
+            \"executionRoleArn\": \"%s\",
             \"family\": \"%s\"
         }'
 
-    task_def=$(printf "$task_template" $appname $AWS_ACCOUNT_ID $AWS_DEFAULT_REGION $AWS_RESOURCE_NAME_PREFIX $CIRCLE_SHA1 $family)
+    task_def=$(printf "$task_template" $containername $AWS_ACCOUNT_ID $AWS_DEFAULT_REGION $AWS_RESOURCE_NAME_PREFIX $CIRCLE_SHA1 $executionrole $family)
 }
 
 push_ecr_image(){
