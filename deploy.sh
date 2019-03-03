@@ -26,7 +26,7 @@ deploy_cluster() {
     # wait for older revisions to disappear
     # not really necessary, but nice for demos
     for attempt in {1..30}; do
-        if stale=$(aws ecs describe-services --cluster sample-webapp-cluster --services sample-webapp-service | \
+        if stale=$(aws ecs describe-services --cluster $clustername --services $servicename | \
                        $JQ ".services[0].deployments | .[] | select(.taskDefinition != \"$revision\") | .taskDefinition"); then
             echo "Waiting for stale deployments:"
             echo "$stale"
@@ -48,8 +48,6 @@ make_task_def() {
 			"name": "%s",
 			"image": "%s.dkr.ecr.%s.amazonaws.com/%s:%s",
 			"essential": true,
-			"memory": 512,
-			"cpu": 256,
 			"portMappings": [
 				{
 					"containerPort": 8080,
@@ -69,7 +67,7 @@ push_ecr_image(){
 
 register_definition() {
 
-    if revision=$(aws ecs register-task-definition --container-definitions "$task_def" --family $family | $JQ '.taskDefinition.taskDefinitionArn'); then
+    if revision=$(aws ecs register-task-definition --container-definitions "$task_def" --cpu 256 --memory 512 --family $family | $JQ '.taskDefinition.taskDefinitionArn'); then
         echo "Revision: $revision"
     else
         echo "Failed to register task definition"
