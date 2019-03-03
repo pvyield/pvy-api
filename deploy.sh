@@ -68,12 +68,12 @@ make_task_def() {
                 {
                     \"name\": \"%s,
                     \"image\": \"%s.dkr.ecr.%s.amazonaws.com/%s:%s\",
-                    \"memoryReservation\": \"512\",
+                    \"memoryReservation\": 512,
                     \"resourceRequirements\": null,
                     \"essential\": true,
                     \"portMappings\": [
                         {
-                            \"containerPort\": \"8080\",
+                            \"containerPort\": 8080,
                             \"hostPort\": 80,
                             \"protocol\": \"tcp\"
                         }
@@ -103,8 +103,8 @@ make_task_def() {
             ],
             \"volumes\": [],
             \"networkMode\": \"awsvpc\",
-            \"memory\": \"512\",
-            \"cpu\": \"256\",
+            \"memory\": 512,
+            \"cpu\": 256,
             \"executionRoleArn\": \"<create_new>\",
             \"family\": \"%s\"
         }'
