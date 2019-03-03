@@ -13,7 +13,7 @@ deploy_cluster() {
 
     clustername="$AWS_RESOURCE_NAME_PREFIX-cluster"
     servicename="$AWS_RESOURCE_NAME_PREFIX-service"
-    family=servicename
+    family=$servicename
 
     make_task_def
     register_definition
@@ -40,10 +40,12 @@ deploy_cluster() {
     return 1
 }
 
-make_task_def(){
+make_task_def() {
+
+    appname = "$AWS_RESOURCE_NAME_PREFIX-app"
 	task_template='[
 		{
-			"name": "pvy-sample-webapp",
+			"name": "%s",
 			"image": "%s.dkr.ecr.%s.amazonaws.com/%s:%s",
 			"essential": true,
 			"memory": 1,
@@ -57,7 +59,7 @@ make_task_def(){
 		}
 	]'
 
-	task_def=$(printf "$task_template" $AWS_ACCOUNT_ID $AWS_DEFAULT_REGION $AWS_RESOURCE_NAME_PREFIX $CIRCLE_SHA1)
+	task_def=$(printf "$task_template" $appname $AWS_ACCOUNT_ID $AWS_DEFAULT_REGION $AWS_RESOURCE_NAME_PREFIX $CIRCLE_SHA1)
 }
 
 push_ecr_image(){
