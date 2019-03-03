@@ -13,7 +13,7 @@ deploy_cluster() {
 
     clustername="$AWS_RESOURCE_NAME_PREFIX-cluster"
     servicename="$AWS_RESOURCE_NAME_PREFIX-service"
-    containername="$AWS_RESOURCE_NAME_PREFIX-container"
+    containername=$servicename # "$AWS_RESOURCE_NAME_PREFIX-container"
     executionrole="$AWS_RESOURCE_NAME_PREFIX-ecs-execution-role"
     family=$servicename
 
