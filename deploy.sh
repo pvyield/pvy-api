@@ -11,11 +11,13 @@ configure_aws_cli(){
 
 deploy_cluster() {
 
-    family="sample-webapp-task-family"
+    clustername="$AWS_RESOURCE_NAME_PREFIX-cluster"
+    servicename="$AWS_RESOURCE_NAME_PREFIX-service"
+    family=servicename
 
     make_task_def
     register_definition
-    if [[ $(aws ecs update-service --cluster sample-webapp-cluster --service sample-webapp-service --task-definition $revision | \
+    if [[ $(aws ecs update-service --cluster $clustername --service $servicename --task-definition $revision | \
                    $JQ '.service.taskDefinition') != $revision ]]; then
         echo "Error updating service."
         return 1
