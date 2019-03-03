@@ -7,3 +7,4 @@ flask_testing
 flask_script
 pyopenssl
 werkzeug
+awscli>=1.15.50
