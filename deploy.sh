@@ -5,7 +5,7 @@ JQ="jq --raw-output --exit-status"
 
 configure_aws_cli(){
 	aws --version
-	aws configure set default.region us-east-1
+	aws configure set default.region $AWS_DEFAULT_REGION
 	aws configure set default.output json
 }
 
@@ -41,8 +41,8 @@ deploy_cluster() {
 make_task_def(){
 	task_template='[
 		{
-			"name": "go-sample-webapp",
-			"image": "%s.dkr.ecr.us-east-1.amazonaws.com/go-sample-webapp:%s",
+			"name": "pvy-sample-webapp",
+			"image": "%s.dkr.ecr.%s.amazonaws.com/%s:%s",
 			"essential": true,
 			"memory": 1,
 			"cpu": 1,
@@ -55,12 +55,12 @@ make_task_def(){
 		}
 	]'
 
-	task_def=$(printf "$task_template" $AWS_ACCOUNT_ID $CIRCLE_SHA1)
+	task_def=$(printf "$task_template" $AWS_ACCOUNT_ID $AWS_DEFAULT_REGION $AWS_RESOURCE_NAME_PREFIX $CIRCLE_SHA1)
 }
 
 push_ecr_image(){
-	eval $(aws ecr get-login --region us-east-1 --no-include-email)
-	docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/go-sample-webapp:$CIRCLE_SHA1
+	eval $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+	docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$AWS_RESOURCE_NAME_PREFIX:$CIRCLE_SHA1
 }
 
 register_definition() {
