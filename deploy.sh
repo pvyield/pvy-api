@@ -72,7 +72,7 @@ make_task_def() {
                     \"essential\": true,
                     \"portMappings\": [
                         {
-                            \"containerPort\": 8080,
+                            \"containerPort\": 80,
                             \"hostPort\": 80,
                             \"protocol\": \"tcp\"
                         }
