@@ -54,7 +54,14 @@ make_task_def() {
                     \"memoryReservation\": 512,
                     \"cpu\": 256,
                     \"memory\": 512,
-                    \"essential\": true
+                    \"essential\": true,
+                    \"portMappings\": [
+                        {
+                            \"containerPort\": 8080,
+                            \"hostPort\": 8080,
+                            \"protocol\": \"tcp\"
+                        }
+                    ]
                 }
             ],
             \"networkMode\": \"awsvpc\",
