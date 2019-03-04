@@ -89,6 +89,7 @@ register_definition() {
     fi
 }
 
+
 configure_aws_cli
 push_ecr_image
 deploy_cluster
