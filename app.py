@@ -15,25 +15,25 @@ import api.v1 as api_v1
 # If none is set in the environment variable, the default dev is used.
 
 
-application = api_v1.main.create_app(os.getenv('BOILERPLATE_ENV') or 'dev')
-application.register_blueprint(api_v1.blueprint, url_prefix='/v1')
+app = api_v1.main.create_app(os.getenv('BOILERPLATE_ENV') or 'dev')
+app.register_blueprint(api_v1.blueprint, url_prefix='/v1')
 
-application.app_context().push()
-manager = Manager(application)
+app.app_context().push()
+manager = Manager(app)
 # jwt = JWT(app, authenticate, identity)
 
 #migrate = Migrate(api, db)
 #manager.add_command('db', MigrateCommand)
 
 
-@application.route("/")
+@app.route("/")
 def index():
     return redirect('/v1/')
 
 
 @manager.command  # marks function as executable from the command line.
 def run():
-    application.run()
+    app.run()
 
 
 @manager.command
@@ -47,4 +47,4 @@ def test():
 
 
 if __name__ == "__main__":
-    application.run()
+    app.run(host="localhost", port=80)
