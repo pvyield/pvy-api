@@ -1,6 +1,7 @@
 import os
 import unittest
 from flask import redirect
+from gevent.pywsgi import WSGIServer
 
 from flask_jwt import JWT
 # from __security import authenticate, identity
@@ -47,4 +48,6 @@ def test():
 
 
 if __name__ == "__main__":
-    app.run(host="localhost", port=80)
+    # app.run(host="localhost", port=80)
+    http_server = WSGIServer(('', 80), app)
+    http_server.serve_forever()

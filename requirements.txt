@@ -8,3 +8,4 @@ flask_script
 pyopenssl
 werkzeug
 awscli>=1.15.50
+gevent
