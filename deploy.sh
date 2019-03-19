@@ -12,8 +12,8 @@ configure_aws_cli(){
 deploy_cluster() {
 
     clustername="$AWS_RESOURCE_NAME_PREFIX-cluster"
-    servicename="$AWS_RESOURCE_NAME_PREFIX-service"
-    containername=$servicename # "$AWS_RESOURCE_NAME_PREFIX-container"
+    servicename="$AWS_RESOURCE_NAME_PREFIX-service-02"
+    containername="$AWS_RESOURCE_NAME_PREFIX-container" # $servicename # "$AWS_RESOURCE_NAME_PREFIX-container"
     executionrole="$AWS_RESOURCE_NAME_PREFIX-ecs-execution-role"
     family=$servicename
 
@@ -88,7 +88,6 @@ register_definition() {
         return 1
     fi
 }
-
 
 configure_aws_cli
 push_ecr_image
