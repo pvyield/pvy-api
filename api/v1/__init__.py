@@ -14,7 +14,7 @@ api = Api(blueprint,
                       'This API provides a complete cloud-based toolchain for the performance analysis of large-scale, '
                       'solar photovoltaic power plants and allows to:'
                       '<ul><li>Define a <b>plant configuration</b> including main components,</li>'
-                      '<li>Create and use <b>irradiance datasets</b> based on user-specified hourly data or datasets from commercial vendors,</li>' 
+                      '<li>Create and use <b>irradiance datasets</b> based on user-specified hourly data or datasets from commercial vendors,</li>'
                       '<li>Optionally set <b>financial boundary conditions</b> for the overall analysis,</li>'
                       '<li><b>Run performance simulations</b> (based on <a href="https://www.nrel.gov/">NREL</a>-driven, open-source <a href="https://github.com/NREL/ssc">SAM</a>),</li>'
                       '<li><b>Optimize</b> for LCOE, IRR, or NPV with <a href="https://en.wikipedia.org/wiki/Genetic_algorithm">genetic optimization</a>, and finally to</li>'

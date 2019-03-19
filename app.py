@@ -3,7 +3,7 @@ import unittest
 from flask import redirect
 from gevent.pywsgi import WSGIServer
 
-from flask_jwt import JWT
+# from flask_jwt import JWT
 # from __security import authenticate, identity
 
 # from flask_migrate import Migrate, MigrateCommand

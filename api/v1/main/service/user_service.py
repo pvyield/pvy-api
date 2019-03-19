@@ -7,7 +7,7 @@ from api.v1.main.model import user
 
 def save_new_user(data):
     User = user.query.filter_by(email=data['email']).first()
-    if not user:
+    if not User:
         new_user = user(
             public_id=str(uuid.uuid4()),
             email=data['email'],

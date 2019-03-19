@@ -21,7 +21,7 @@ class UserList(Resource):
     @api.expect(_user, validate=True)
     def post(self):
         """Creates a new User """
-        data = request.json
+        #data = request.json
         #return save_new_user(data=data)
 
 
