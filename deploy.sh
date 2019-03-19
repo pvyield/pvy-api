@@ -10,17 +10,16 @@ configure_aws_cli(){
 }
 
 deploy_cluster() {
-
     clustername="$AWS_RESOURCE_NAME_PREFIX-cluster"
     servicename="$AWS_RESOURCE_NAME_PREFIX-service-02"
+    taskname="$AWS_RESOURCE_NAME_PREFIX-task"
     containername="$AWS_RESOURCE_NAME_PREFIX-container" # $servicename
     executionrole="$AWS_RESOURCE_NAME_PREFIX-ecs-execution-role"
-    family=$servicename
 
     make_task_def
     register_definition
-    if [[ $(aws ecs update-service --cluster $clustername --service $servicename --task-definition $revision | \
-                   $JQ '.service.taskDefinition') != $revision ]]; then
+    if [[ $(aws ecs update-service --cluster $clustername --service $servicename --task-definition $taskrevision | \
+                   $JQ '.service.taskDefinition') != $taskrevision ]]; then
         echo "Error updating service."
         return 1
     fi
@@ -44,6 +43,7 @@ deploy_cluster() {
 
 make_task_def() {
     task_template='{
+            \"family\": \"%s\",
             \"requiresCompatibilities\": [
                 \"FARGATE\"
             ],
@@ -67,11 +67,10 @@ make_task_def() {
             \"networkMode\": \"awsvpc\",
             \"memory\": \"512\",
             \"cpu\": \"256\",
-            \"executionRoleArn\": \"%s\",
-            \"family\": \"%s\"
+            \"executionRoleArn\": \"%s\"
         }'
 
-    task_def=$(printf "$task_template" $containername $AWS_ACCOUNT_ID $AWS_DEFAULT_REGION $AWS_RESOURCE_NAME_PREFIX $CIRCLE_SHA1 $executionrole $family)
+    task_definition=$(printf "$task_template" $taskname $containername $AWS_ACCOUNT_ID $AWS_DEFAULT_REGION $AWS_RESOURCE_NAME_PREFIX $CIRCLE_SHA1 $executionrole)
 }
 
 push_ecr_image(){
@@ -80,9 +79,9 @@ push_ecr_image(){
 }
 
 register_definition() {
-    echo "task-definitions: $task_def"
-    if revision=$(aws ecs register-task-definition --cli-input-json "$task_def" | $JQ '.taskDefinition.taskDefinitionArn'); then
-        echo "Revision: $revision"
+    echo "task-definitions: $task_definition"
+    if taskrevision=$(aws ecs register-task-definition --cli-input-json "$task_definition" | $JQ '.taskDefinition.taskDefinitionArn'); then
+        echo "Task Revision: $taskrevision"
     else
         echo "Failed to register task definition"
         return 1
