@@ -10,7 +10,6 @@ RUN apk add libffi-dev openssl-dev
 COPY requirements.txt /app/requirements.txt
 
 # install python packages
-RUN pip install cffi
 RUN pip install -r /app/requirements.txt
 
 # Copy the current directory contents into the container at /app
