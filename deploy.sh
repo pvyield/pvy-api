@@ -13,13 +13,13 @@ deploy_cluster() {
 
     clustername="$AWS_RESOURCE_NAME_PREFIX-cluster"
     servicename="$AWS_RESOURCE_NAME_PREFIX-service-02"
-    containername="$AWS_RESOURCE_NAME_PREFIX-container" # $servicename # "$AWS_RESOURCE_NAME_PREFIX-container"
+    containername="$AWS_RESOURCE_NAME_PREFIX-container" # $servicename
     executionrole="$AWS_RESOURCE_NAME_PREFIX-ecs-execution-role"
     family=$servicename
 
     make_task_def
     register_definition
-    if [[ $(aws ecs update-service --cluster $clustername --service $servicename --task-definition $revision | \
+    if [[ $(aws ecs update-service --cluster $clustername --service $containername --task-definition $revision | \
                    $JQ '.service.taskDefinition') != $revision ]]; then
         echo "Error updating service."
         return 1
