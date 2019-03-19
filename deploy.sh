@@ -11,7 +11,7 @@ configure_aws_cli(){
 
 deploy_cluster() {
     clustername="$AWS_RESOURCE_NAME_PREFIX-cluster"
-    servicename="$AWS_RESOURCE_NAME_PREFIX-service-02"
+    servicename="$AWS_RESOURCE_NAME_PREFIX-service-03"
     taskname="$AWS_RESOURCE_NAME_PREFIX-task"
     containername="$AWS_RESOURCE_NAME_PREFIX-container" # $servicename
     executionrole="$AWS_RESOURCE_NAME_PREFIX-ecs-execution-role"
