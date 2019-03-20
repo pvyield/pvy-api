@@ -2,12 +2,12 @@ import uuid
 import datetime
 
 from api.v1.main import db
-from api.v1.main.model import user
+from api.v1.main.model.user import User
 
 
 def save_new_user(data):
-    User = user.query.filter_by(email=data['email']).first()
-    if not User:
+    user = User.query.filter_by(email=data['email']).first()
+    if not user:
         new_user = user(
             public_id=str(uuid.uuid4()),
             email=data['email'],
@@ -30,7 +30,7 @@ def save_new_user(data):
 
 
 def get_all_users():
-    return user.query.all()
+    return User.query.all()
 
 
 def get_a_user(public_id):

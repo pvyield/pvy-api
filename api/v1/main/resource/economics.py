@@ -30,7 +30,7 @@ class PostFinancial(Resource):
 
 @api.route('/lcoe/<string:fuid>')
 @api.param('fuid', 'The LCOE dataset unique identifier')
-class Financial(Resource):
+class Lcoe(Resource):
 
     @jwt_required()
     def get(self, fuid):
@@ -42,7 +42,7 @@ class Financial(Resource):
 
 
 @api.route('/lcoe')
-class PostFinancial(Resource):
+class PostLcoe(Resource):
 
     @jwt_required()
     def post(self):

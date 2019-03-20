@@ -36,6 +36,7 @@ class TestTestingConfig(TestCase):
 
 
 class TestProductionConfig(TestCase):
+    @classmethod
     def create_app(self):
         application.config.from_object('api.main.config.ProductionConfig')
         return application

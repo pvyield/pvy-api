@@ -22,6 +22,7 @@ class PlantSpec(Resource):
                         )
 
     @jwt_required()
+    @classmethod()
     @api.doc('get a plant specification')
     @api.marshal_with(_plantSpecPvy)
     def get(self, uid):
@@ -32,6 +33,7 @@ class PlantSpec(Resource):
         return {'message': 'Item not found'}, 404
 
     @jwt_required()
+    @classmethod()
     def delete(self, uid):
         """Delete a plant configuration specification from the database by unique identifier."""
         plantSpecPvy = PlantSpecModel.find_by_uid(uid)
