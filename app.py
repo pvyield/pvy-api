@@ -2,6 +2,12 @@ import os
 import unittest
 from flask import redirect
 from gevent.pywsgi import WSGIServer
+import sentry_sdk
+from sentry_sdk.integrations.flask import FlaskIntegration
+
+
+
+
 
 # from flask_jwt import JWT
 # from __security import authenticate, identity
@@ -48,6 +54,9 @@ def test():
 
 
 if __name__ == "__main__":
-    # app.run(host="localhost", port=80)
+    sentry_sdk.init(
+        dsn="https://126e3b543d2244ebb3f78cc00964008a@sentry.io/1419932",
+        integrations=[FlaskIntegration()]
+    )
     http_server = WSGIServer(('', 80), app)
     http_server.serve_forever()

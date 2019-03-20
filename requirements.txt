@@ -6,6 +6,7 @@ flask_sqlalchemy
 flask_bcrypt
 flask_testing
 flask_script
+sentry-sdk[flask]==0.7.7
 pyopenssl
 werkzeug
 awscli>=1.15.50
