@@ -1,8 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
-from werkzeug.contrib.fixers import ProxyFix
-
+from werkzeug.middleware.proxy_fix import ProxyFix
 from .config import config_by_name
 
 db = SQLAlchemy()

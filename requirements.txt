@@ -8,6 +8,6 @@ flask_testing
 flask_script
 sentry-sdk[flask]==0.7.7
 pyopenssl
-werkzeug
+werkzeug==0.15.1
 awscli>=1.15.50
 gevent
