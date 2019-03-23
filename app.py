@@ -55,5 +55,10 @@ if __name__ == "__main__":
         dsn="https://126e3b543d2244ebb3f78cc00964008a@sentry.io/1419932",
         integrations=[FlaskIntegration()]
     )
-    http_server = WSGIServer(('', 80), app)
-    http_server.serve_forever()
+
+    # run gevent
+    #http_server = WSGIServer(('', 80), app)
+    #http_server.serve_forever()
+
+    # run gunicorn
+    # app.run(host='0.0.0.0')
