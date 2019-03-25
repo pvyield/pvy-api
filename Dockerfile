@@ -1,6 +1,6 @@
 # Use an official Python runtime as a parent image
-# FROM python:3.7-alpine
-FROM tiangolo/meinheld-gunicorn:python3.7-alpine3.8
+FROM python:3.7-alpine
+# FROM tiangolo/meinheld-gunicorn:python3.7-alpine3.8
 
 RUN apk add build-base
 RUN apk add libffi-dev openssl-dev
@@ -22,4 +22,4 @@ WORKDIR /app
 EXPOSE 80
 
 # Run app.py when the container launches
-#CMD ["python", "app.py"]
+CMD ["python", "app.py"]

@@ -57,8 +57,8 @@ if __name__ == "__main__":
     )
 
     # run gevent
-    #http_server = WSGIServer(('', 80), app)
-    #http_server.serve_forever()
+    http_server = WSGIServer(('localhost', 80), app)
+    http_server.serve_forever()
 
     # run gunicorn
     # app.run(host='0.0.0.0')
