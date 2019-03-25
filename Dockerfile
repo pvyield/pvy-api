@@ -4,7 +4,7 @@ FROM python:3.7-alpine
 
 RUN apk add build-base
 RUN apk add libffi-dev openssl-dev
-#RUN apk add nginx
+RUN apk add nginx
 
 # copy requirements only to use caching
 COPY requirements.txt /app/requirements.txt

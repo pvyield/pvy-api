@@ -18,8 +18,7 @@ import api.v1 as api_v1
 # from the environment variable which can be either of the following - dev, prod, test.
 # If none is set in the environment variable, the default dev is used.
 
-
-app = api_v1.main.create_app(os.getenv('BOILERPLATE_ENV') or 'dev')
+app = api_v1.main.create_app(os.getenv('ENV_TYPE'))
 app.register_blueprint(api_v1.blueprint, url_prefix='/v1')
 
 app.app_context().push()
@@ -52,12 +51,12 @@ def test():
 
 if __name__ == "__main__":
     sentry_sdk.init(
-        dsn="https://126e3b543d2244ebb3f78cc00964008a@sentry.io/1419932",
+        dsn=os.getenv('SENTRY_DSN'),
         integrations=[FlaskIntegration()]
     )
 
     # run gevent
-    http_server = WSGIServer(('localhost', 80), app)
+    http_server = WSGIServer(('0.0.0.0', 80), app)
     http_server.serve_forever()
 
     # run gunicorn
