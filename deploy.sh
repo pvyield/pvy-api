@@ -67,10 +67,14 @@ make_task_def() {
             \"networkMode\": \"awsvpc\",
             \"memory\": \"512\",
             \"cpu\": \"256\",
-            \"executionRoleArn\": \"%s\"
+            \"executionRoleArn\": \"%s\",
+            \"environment\" : [
+                { \"name\" : \"ENV_TYPE\", \"value\" : \"%s\" },
+                { \"name\" : \"SENTRY_DSN\", \"value\" : \"%s\" }
+            ]
         }'
 
-    task_definition=$(printf "$task_template" $taskname $containername $AWS_ACCOUNT_ID $AWS_DEFAULT_REGION $AWS_RESOURCE_NAME_PREFIX $CIRCLE_SHA1 $executionrole)
+    task_definition=$(printf "$task_template" $taskname $containername $AWS_ACCOUNT_ID $AWS_DEFAULT_REGION $AWS_RESOURCE_NAME_PREFIX $CIRCLE_SHA1 $executionrole $ENV_TYPE $SENTRY_DSN)
 }
 
 push_ecr_image(){
