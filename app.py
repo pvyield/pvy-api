@@ -6,6 +6,7 @@ from gevent.pywsgi import WSGIServer
 
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 # from flask_jwt import JWT
 # from __security import authenticate, identity
@@ -20,9 +21,9 @@ import api.v1 as api_v1
 
 app = api_v1.main.create_app(os.getenv('ENV_TYPE'))
 app.register_blueprint(api_v1.blueprint, url_prefix='/v1')
-
 app.app_context().push()
 manager = Manager(app)
+app.wsgi_app = ProxyFix(app.wsgi_app)
 # jwt = JWT(app, authenticate, identity)
 
 #migrate = Migrate(api, db)
